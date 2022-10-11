@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from "react";
-import {
-  AddToFavKanjis,
-  RemoveFromFavKanjis,
-} from "../../services/Kanji/toggleFavKanji";
+import useKanji from "../../hooks/useKanji";
 
-function FavKanjiButton() {
-  const [favKanji, setFavKanji] = useState(true);
-  useEffect(() => {
-    favKanji ? AddToFavKanjis("favorito") : RemoveFromFavKanjis("no favorito");
-  });
-
+function FavKanjiButton({ kanjiId }) {
+  const { isFav, toggleFav } = useKanji(kanjiId);
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill={favKanji ? "red" : "none"}
+      fill={isFav ? "red" : "none"}
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      onClick={() => setFavKanji(!favKanji)}
+      onClick={() => toggleFav(kanjiId)}
       className="w-10 h-10 absolute right-16 top-5 hover:cursor-pointer"
     >
       <path

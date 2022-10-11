@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { Suspense } from "react";
 import KanjiContainer from "./components/Kanji/KanjiContainer";
-import { Carousel, Footer } from "flowbite-react";
 import Header from "./components/Header/Header";
+import { KanjiProvider } from "./context/KanjiContext";
 function App() {
   return (
     <>
       <Header />
-      <KanjiContainer />
+      <KanjiProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <KanjiContainer />
+        </Suspense>
+      </KanjiProvider>
     </>
   );
 }

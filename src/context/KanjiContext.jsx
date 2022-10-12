@@ -1,8 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import {
-  AddToFavKanjis,
-  RemoveFromFavKanjis,
-} from "../services/Kanji/toggleFavKanji";
 
 const KanjiContext = createContext();
 

@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  AddToFavKanjis,
-  RemoveFromFavKanjis,
-} from "../services/Kanji/toggleFavKanji";
+import axios from "axios";
 
 export default function useKanji(id) {
-  let isLoggedIn = true;
+  let isLoggedIn = false;
   const [isFav, setIsFav] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -13,13 +10,12 @@ export default function useKanji(id) {
     if (!isLoggedIn) return;
     async function fetchKanji() {
       try {
-        /*  const response = await fetch(
-          `https://kanji-app.up.railway.app/profile/favorites/${id}`
+        const response = await fetch(
+          `https://kanji-app.up.railway.app/profile/is-favorite/${id}`
         );
-        const data = await response.json(); */
+        const data = await response.json();
         console.log("fetching");
-        // setIsFav(data.isFav);
-        setIsFav(true);
+        setIsFav(data.isFav);
         setLoading(false);
       } catch (e) {
         setError(true);

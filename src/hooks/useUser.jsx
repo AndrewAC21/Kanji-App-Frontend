@@ -1,30 +1,45 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 
+import { UserContext } from "../context/UserContext";
 export default function useUser() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [token, setToken] = useState("");
   const instance = axios.create({
     baseURL: "https://kanji-app.up.railway.app",
-    headers: {},
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
-  const logIn = async ({ username, password }) => {
-    const response = await instance.post("/login", { username, password });
-    const data = await response.json();
-    console.log(response);
-    console.log(data);
-    if (response.status !== 200) {
+  const logIn = async ({ email, password }) => {
+    setError(false);
+    console.log(email, password);
+    console.log("fetching desde useUser");
+    try {
+      const response = await instance.post("/login", {
+        email,
+        password,
+      });
+      /*        const response = await fetch("https://kanji-app.up.railway.app/login", {
+        method: "POST",
+        body: { email, password },
+      }); */
+
+      console.log(response);
+      console.log("success");
+      setLoading(false);
+      instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setIsLoggedIn(true);
+    } catch (e) {
+      console.log(e);
+      console.log("error");
       setLoading(false);
       setError(true);
       return data;
     }
-    setLoading(false);
-    setToken(data.auth_token);
-    instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setIsLoggedIn(true);
   };
 
   const logOut = () => {
@@ -79,7 +94,6 @@ export default function useUser() {
   };
 
   return {
-    isLoggedIn,
     logIn,
     logOut,
     settings,

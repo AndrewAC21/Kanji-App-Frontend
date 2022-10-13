@@ -14,6 +14,17 @@ export default function useUser() {
     },
   });
 
+  const register = async (data) => {
+    try {
+      const response = await instance.post("/sign-up", { ...data });
+      return response;
+    } catch (error) {
+      console.log("useUser");
+      console.log(error);
+      return error.response;
+    }
+  };
+
   const logIn = async ({ email, password }) => {
     setError(false);
     console.log(email, password);
@@ -23,19 +34,12 @@ export default function useUser() {
         email,
         password,
       });
-      /*        const response = await fetch("https://kanji-app.up.railway.app/login", {
-        method: "POST",
-        body: { email, password },
-      }); */
+      console.log(response.data);
 
-      console.log(response);
-      console.log("success");
       setLoading(false);
-      instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setIsLoggedIn(true);
     } catch (e) {
       console.log(e);
-      console.log("error");
       setLoading(false);
       setError(true);
       return data;
@@ -50,7 +54,6 @@ export default function useUser() {
 
   const settings = async () => {
     const response = await instance.get("/profile/settings");
-    const data = await response.json();
     console.log(response);
     console.log(data);
     if (response.status !== 200) {
@@ -94,6 +97,7 @@ export default function useUser() {
   };
 
   return {
+    register,
     logIn,
     logOut,
     settings,

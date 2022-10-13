@@ -3,22 +3,24 @@ import { Button, Modal, TextInput, Label, Alert } from "flowbite-react";
 import useUser from "../hooks/useUser";
 import { UserContext } from "../context/UserContext";
 
-export default function SignInModal() {
+export default function SignInModal({
+  showSignInModal,
+  setShowSignUpModal,
+  setShowSignInModal,
+}) {
   const { logIn } = useUser();
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showModal, setShowModal] = useState(false);
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
+  const openSignUpModal = () => {
+    setShowSignUpModal(true);
+    setShowSignInModal(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(error, "1");
     setError(false);
-    console.log(error, "2");
     try {
       const fetchLogin = await logIn({
         email,
@@ -31,8 +33,12 @@ export default function SignInModal() {
   };
   return (
     <>
-      <Button onClick={toggleModal}>Toggle modal</Button>
-      <Modal show={showModal} size="md" popup={true} onClose={toggleModal}>
+      <Modal
+        show={showSignInModal}
+        size="md"
+        popup={true}
+        onClose={() => setShowSignInModal(false)}
+      >
         <Modal.Header />
         {error && (
           <Alert color="failure">
@@ -64,7 +70,7 @@ export default function SignInModal() {
                   <Label htmlFor="password" value="Your password" />
                 </div>
                 <TextInput
-                  id="password"
+                  id="password-login"
                   type="password"
                   required={true}
                   onChange={(e) => setPassword(e.target.value)}
@@ -72,7 +78,7 @@ export default function SignInModal() {
               </div>
               <div className="flex justify-between">
                 <a
-                  href="/modal"
+                  href="#"
                   className="text-sm text-blue-700 hover:underline dark:text-blue-500"
                 >
                   Lost Password?
@@ -84,8 +90,10 @@ export default function SignInModal() {
               <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
                 Not registered?{" "}
                 <a
-                  href="/modal"
-                  className="text-blue-700 hover:underline dark:text-blue-500"
+                  onClick={() => {
+                    openSignUpModal();
+                  }}
+                  className="text-blue-700 hover:underline dark:text-blue-500 cursor-pointer"
                 >
                   Create account
                 </a>

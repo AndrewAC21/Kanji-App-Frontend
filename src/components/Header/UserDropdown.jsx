@@ -2,9 +2,7 @@ import { useContext } from "react";
 import { Dropdown, Avatar } from "flowbite-react";
 import { UserContext } from "../../context/UserContext";
 import NotLoggedInUserIcon from "./NotLoggedInUserIcon";
-export default function () {
-  const { isLoggedIn } = useContext(UserContext);
-
+export default function ({ isLoggedIn }) {
   return !isLoggedIn ? (
     <NotLoggedInUserIcon />
   ) : (

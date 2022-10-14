@@ -25,6 +25,7 @@ export default function useUser() {
       });
       const token = await response.data.token.access_token;
       window.sessionStorage.setItem("jwt", token);
+      setJWT(token);
       setIsLoggedIn(true);
       return response;
     } catch (e) {
@@ -35,6 +36,7 @@ export default function useUser() {
 
   const logOut = () => {
     setIsLoggedIn(false);
+    setJWT(null);
     window.sessionStorage.removeItem("jwt");
   };
   const register = async (data) => {
@@ -48,10 +50,10 @@ export default function useUser() {
     }
   };
   const settings = async () => {
-    console.log(instance.defaults.headers);
     try {
-      const response = await instance.get("/profile/settings");
-      console.log(response);
+      const response = await axios.get(`${BASE_URL}/profile/settings`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
       setLoading(false);
       return response;
     } catch (e) {

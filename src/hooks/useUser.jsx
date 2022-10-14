@@ -1,22 +1,45 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback, useEffect } from "react";
 import axios from "axios";
 
 import { UserContext } from "../context/UserContext";
+
+const BASE_URL = "https://kanji-app.up.railway.app";
 export default function useUser() {
+  const { jwt, setJWT } = useContext(UserContext);
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [token, setToken] = useState("");
-  const instance = axios.create({
-    baseURL: "https://kanji-app.up.railway.app",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 
+  useEffect(
+    useCallback(() => {
+      if (jwt) setIsLoggedIn(true);
+    }, []),
+    []
+  );
+  const logIn = async ({ email, password }) => {
+    setError(false);
+    try {
+      const response = await axios.post(`${BASE_URL}/login`, {
+        email,
+        password,
+      });
+      const token = await response.data.token.access_token;
+      window.sessionStorage.setItem("jwt", token);
+      setIsLoggedIn(true);
+      return response;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  };
+
+  const logOut = () => {
+    setIsLoggedIn(false);
+    window.sessionStorage.removeItem("jwt");
+  };
   const register = async (data) => {
     try {
-      const response = await instance.post("/sign-up", { ...data });
+      const response = await axios.post(`${BASE_URL}/sign-up`, { ...data });
       return response;
     } catch (error) {
       console.log("useUser");
@@ -24,45 +47,18 @@ export default function useUser() {
       return error.response;
     }
   };
-
-  const logIn = async ({ email, password }) => {
-    setError(false);
-    console.log(email, password);
-    console.log("fetching desde useUser");
-    try {
-      const response = await instance.post("/login", {
-        email,
-        password,
-      });
-      console.log(response.data);
-
-      setLoading(false);
-      setIsLoggedIn(true);
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
-      setError(true);
-      return data;
-    }
-  };
-
-  const logOut = () => {
-    setToken("");
-    instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setIsLoggedIn(false);
-  };
-
   const settings = async () => {
-    const response = await instance.get("/profile/settings");
-    console.log(response);
-    console.log(data);
-    if (response.status !== 200) {
+    console.log(instance.defaults.headers);
+    try {
+      const response = await instance.get("/profile/settings");
+      console.log(response);
+      setLoading(false);
+      return response;
+    } catch (e) {
       setLoading(false);
       setError(true);
-      return data;
+      return e;
     }
-    setLoading(false);
-    return data;
   };
 
   const removeFromFavList = async (kanjiId) => {

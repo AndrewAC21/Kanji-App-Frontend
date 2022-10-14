@@ -21,14 +21,15 @@ export default function SignInModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(false);
-    try {
-      const fetchLogin = await logIn({
-        email,
-        password,
-      });
-      return fetchLogin;
-    } catch (error) {
+
+    const fetchLogin = await logIn({
+      email,
+      password,
+    });
+
+    if (fetchLogin.status !== 200) {
       setError(true);
+      return;
     }
   };
   return (

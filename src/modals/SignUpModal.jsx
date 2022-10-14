@@ -38,7 +38,9 @@ export default function SignUpModal({
     }
 
     setSuccess(true);
+    setTimeout(openSignInModal, 10000);
   };
+
   return (
     <>
       <Modal

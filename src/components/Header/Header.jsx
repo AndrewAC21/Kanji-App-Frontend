@@ -1,9 +1,11 @@
-import React, {useContext} from "react";
-import { Navbar  } from "flowbite-react";
+import { useContext } from "react";
+import { Navbar } from "flowbite-react";
 import UserDropdown from "./UserDropdown";
 import { UserContext } from "../../context/UserContext";
+
 function Header() {
   const { isLoggedIn } = useContext(UserContext);
+
   return (
     <Navbar fluid={true} rounded={true}>
       <Navbar.Brand href="https://flowbite.com/">

@@ -1,19 +1,18 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import useUser from "../hooks/useUser";
-export const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
-  const instance = axios.create({
-    baseURL: "https://kanji-app.up.railway.app",
-    headers: {},
-  });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const UserContext = createContext();
+
+const UserProvider = ({ children }) => {
+  const [jwt, setJWT] = useState(() => window.sessionStorage.getItem("jwt"));
+  const [isLoggedIn, setIsLoggedIn] = useState(() => false);
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      {isLoggedIn ? "Logged In" : "Not Logged in"}
+    <UserContext.Provider value={{ jwt, setJWT, isLoggedIn, setIsLoggedIn }}>
       {children}
     </UserContext.Provider>
   );
 };
+
+export { UserContext, UserProvider };

@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const KanjiContext = createContext();
-
+const BASE_URL = "https://kanji-app.up.railway.app";
 function KanjiProvider({ children }) {
   const [kanjis, setKanjis] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,10 +11,9 @@ function KanjiProvider({ children }) {
   useEffect(() => {
     async function fetchKanjis() {
       try {
-        const response = await fetch("https://kanji-app.up.railway.app/kanjis");
-        const data = await response.json();
+        const response = await axios.get(`${BASE_URL}/kanjis`);
         setLoading(false);
-        setKanjis(data);
+        setKanjis(response.data);
       } catch (e) {
         setError(true);
         setLoading(false);

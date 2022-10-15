@@ -44,7 +44,6 @@ export default function useUser() {
       const response = await axios.post(`${BASE_URL}/sign-up`, { ...data });
       return response;
     } catch (error) {
-      console.log("useUser");
       console.log(error);
       return error.response;
     }
@@ -63,44 +62,11 @@ export default function useUser() {
     }
   };
 
-  const removeFromFavList = async (kanjiId) => {
-    const response = await instance.delete(`/profile/favorite`, {
-      data: kanjiId,
-    });
-    const data = await response.json();
-    console.log(response);
-    console.log(data);
-    if (response.status !== 200) {
-      setLoading(false);
-      setError(true);
-      return data;
-    }
-    setLoading(false);
-    return data;
-  };
-  const addToFavList = async (kanjiId) => {
-    const response = await instance.post(`/profile/favorite`, {
-      data: kanjiId,
-    });
-    const data = await response.json();
-    console.log(response);
-    console.log(data);
-    if (response.status !== 200) {
-      setLoading(false);
-      setError(true);
-      return data;
-    }
-    setLoading(false);
-    return data;
-  };
-
   return {
     register,
     logIn,
     logOut,
     settings,
-    addToFavList,
-    removeFromFavList,
     loading,
     error,
   };

@@ -32,7 +32,7 @@ export default function useKanji(id) {
       }
     }
     fetchKanji();
-  }, []);
+  }, [isLoggedIn]);
   console.log(isFav, id);
   const toggleFav = (id) => {
     isFav ? removeFromFavList(id) : addToFavList(id);

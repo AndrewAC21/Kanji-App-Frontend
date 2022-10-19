@@ -6,8 +6,7 @@ import { UserContext } from "../../context/UserContext";
 function SignedInUserIcon() {
   const { isLoggedIn } = useContext(UserContext);
   const { logOut, settings } = useUser();
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [showSettings, setShowSettings] = useState(false);
   const nameInputRef = useRef();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -16,27 +15,38 @@ function SignedInUserIcon() {
       async function fetchSettings() {
         if (isLoggedIn) {
           const { data } = await settings();
-          console.log(emailInputRef);
           emailInputRef.current.value = data.email;
-          setUsername(data.fullName);
+          nameInputRef.current.value = data.fullName;
         }
       }
       fetchSettings();
-    }, [emailInputRef, username]),
+    }, [emailInputRef, nameInputRef]),
     []
   );
 
   const changeSettings = () => {
-    console.log("change setting");
+    console.log(showSettings);
+    if (!showSettings) {
+      emailInputRef.current.disabled = true;
+      nameInputRef.current.disabled = true;
+      passwordInputRef.current.classList.add("hidden");
+      setShowSettings(true);
+      return;
+    }
     emailInputRef.current.disabled = false;
     nameInputRef.current.disabled = false;
     passwordInputRef.current.classList.remove("hidden");
+
+    setShowSettings(!showSettings);
   };
 
   const submitSettings = () => {
     console.log("submit settings");
   };
 
+  const toggleShowSettings = () => {
+    setShowSettings(!showSettings);
+  };
   return (
     <Dropdown
       arrowIcon={false}
@@ -54,7 +64,6 @@ function SignedInUserIcon() {
           <input
             disabled
             className="block text-sm mb-2 bg-slate-200 disabled:bg-transparent"
-            value={username}
             ref={nameInputRef}
           />
           <input

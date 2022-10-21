@@ -3,7 +3,7 @@ import { Dropdown, Avatar, Button } from "flowbite-react";
 import axios from "axios";
 import useUser from "../../hooks/useUser";
 import { UserContext } from "../../context/UserContext";
-
+import FavKanjisModal from "../../modals/FavKanjisModal";
 function SignedInUserIcon() {
   const { isLoggedIn, jwt } = useContext(UserContext);
   const { logOut, settings } = useUser();
@@ -12,6 +12,8 @@ function SignedInUserIcon() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const formDivRef = useRef();
+
+  const [showFavKanjisModal, setShowFavKanjisModal] = useState(false);
   useEffect(
     useCallback(() => {
       async function fetchSettings() {
@@ -61,6 +63,7 @@ function SignedInUserIcon() {
       console.log(e);
     }
   };
+  //Todo create success & error states to trigger form error messages
   return (
     <Dropdown
       arrowIcon={false}
@@ -107,7 +110,13 @@ function SignedInUserIcon() {
       <Dropdown.Item onClick={toggleShowSettings}>
         <span>Change settings</span>
       </Dropdown.Item>
-      <Dropdown.Item>Favorite Kanjis</Dropdown.Item>
+      <Dropdown.Item onClick={() => setShowFavKanjisModal(true)}>
+        Favorite Kanjis
+      </Dropdown.Item>
+      <FavKanjisModal
+        setShowFavKanjisModal={setShowFavKanjisModal}
+        showFavKanjisModal={showFavKanjisModal}
+      />
       <Dropdown.Divider />
       <Dropdown.Item onClick={() => logOut()}>Sign out</Dropdown.Item>
     </Dropdown>

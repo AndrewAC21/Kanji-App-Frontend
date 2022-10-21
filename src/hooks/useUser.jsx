@@ -62,6 +62,17 @@ export default function useUser() {
     }
   };
 
+  const getFavs = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/profile/favorites`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
   return {
     register,
     logIn,
@@ -69,5 +80,6 @@ export default function useUser() {
     settings,
     loading,
     error,
+    getFavs
   };
 }

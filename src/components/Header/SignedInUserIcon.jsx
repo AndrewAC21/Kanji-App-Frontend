@@ -50,14 +50,12 @@ function SignedInUserIcon() {
   const submitSettings = async (e) => {
     e.preventDefault();
     try {
-      console.log("submitting");
       //TODO create 8-character password validation
       let response = await instance.put("profile/settings", {
         fullName: nameInputRef.current.value,
         email: emailInputRef.current.value,
         password: passwordInputRef.current.value,
       });
-      console.log(response);
       toggleShowSettings(!showSettings);
     } catch (e) {
       console.log(e);

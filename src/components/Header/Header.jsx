@@ -15,7 +15,7 @@ function Header() {
           alt="Flowbite Logo"
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Flowbite
+          Kanji App
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2 mr-6">

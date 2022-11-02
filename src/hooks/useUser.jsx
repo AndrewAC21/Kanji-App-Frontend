@@ -29,7 +29,6 @@ export default function useUser() {
       setIsLoggedIn(true);
       return response;
     } catch (e) {
-      console.log(e);
       return e;
     }
   };
@@ -44,7 +43,6 @@ export default function useUser() {
       const response = await axios.post(`${BASE_URL}/sign-up`, { ...data });
       return response;
     } catch (error) {
-      console.log(error);
       return error.response;
     }
   };

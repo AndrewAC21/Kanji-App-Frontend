@@ -33,7 +33,6 @@ export default function useKanji(id) {
     }
     fetchKanji();
   }, [isLoggedIn]);
-  console.log(isFav, id);
   const toggleFav = (id) => {
     isFav ? removeFromFavList(id) : addToFavList(id);
   };
@@ -46,7 +45,6 @@ export default function useKanji(id) {
       setIsFav(false);
     } catch (e) {
       setLoading(false);
-      console.log(e);
 
       setLoading(false);
       setError(true);
@@ -60,7 +58,6 @@ export default function useKanji(id) {
       setIsFav(true);
       setLoading(false);
     } catch (e) {
-      console.log(e);
       setLoading(false);
       setError(true);
       return e;

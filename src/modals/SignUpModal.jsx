@@ -16,7 +16,6 @@ export default function SignUpModal({
   const [fullName, setFullName] = useState("");
 
   const openSignInModal = () => {
-    console.log("openSignInModal");
     setShowSignUpModal(false);
     setShowSignInModal(true);
   };

@@ -15,7 +15,7 @@ function FavKanjisModal({ showFavKanjisModal, setShowFavKanjisModal }) {
   useEffect(
     useCallback(() => {
       favList();
-    }, []),
+    }, [favs]),
     []
   );
   return (
